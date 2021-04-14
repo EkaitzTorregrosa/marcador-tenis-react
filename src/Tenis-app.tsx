@@ -67,7 +67,14 @@ export function TenisForm() {
               <div className="card-block text-center">
                 <h4 className="card-title text-dark">SCORE</h4>
               </div>
-              <ul className="list-group list-group-flush" id="score-list"></ul>
+              <ul className="list-group list-group-flush" id="score-list">
+                <li
+                  className="list-group-item text-dark fw-light"
+                  style={{ fontSize: "50%" }}
+                >
+                  Love all
+                </li>
+              </ul>
             </div>
 
             <div className="col">
