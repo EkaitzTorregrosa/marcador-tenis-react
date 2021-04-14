@@ -15,9 +15,7 @@ export function TenisForm() {
     setPlayerTwoName(event.target.elements.playerTwoName.value);
     setIsGameStarted(true);
   }
-  function newGame() {
-    setIsGameStarted(false);
-  }
+
   function playerOnePoint(event: any) {
     event.preventDefault();
     GAME.playerOnePoint();
@@ -28,6 +26,7 @@ export function TenisForm() {
     GAME.playerTwoPoint();
     showScore();
   }
+
   function showScore() {
     var ul: any = document.getElementById("score-list");
     var li: any = document.createElement("li");
@@ -37,10 +36,14 @@ export function TenisForm() {
     ul.appendChild(li);
     checkGameFinished();
   }
+
   function checkGameFinished() {
     if (GAME.getScore().toString().includes("Win")) {
       setIsGameFinished(true);
     }
+  }
+  function newGame() {
+    setIsGameStarted(false);
   }
 
   if (isGameStarted) {
