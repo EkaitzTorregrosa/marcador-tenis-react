@@ -28,8 +28,8 @@ export function TenisForm() {
   }
 
   function showScore() {
-    var ul: any = document.getElementById("score-list");
-    var li: any = document.createElement("li");
+    let ul: any = document.getElementById("score-list");
+    let li: any = document.createElement("li");
     li.className = "list-group-item text-dark fw-light";
     li.style = "font-size: 50%";
     li.appendChild(document.createTextNode(GAME.getScore().toString()));
