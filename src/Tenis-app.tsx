@@ -1,5 +1,6 @@
 import "bootstrap/dist/css/bootstrap.css";
 import { useState } from "react";
+import ReactDOM from "react-dom";
 import { TennisGame } from "./Tenis-game";
 
 export function TenisForm() {
@@ -28,12 +29,16 @@ export function TenisForm() {
   }
 
   function showScore() {
-    let ul: any = document.getElementById("score-list");
-    let li: any = document.createElement("li");
-    li.className = "list-group-item text-dark fw-light";
-    li.style = "font-size: 50%";
-    li.appendChild(document.createTextNode(GAME.getScore().toString()));
-    ul.appendChild(li);
+    const element = (
+      <li
+        className="list-group-item text-dark fw-light"
+        style={{ fontSize: "50%" }}
+      >
+        {GAME.getScore().toString()}
+      </li>
+    );
+
+    ReactDOM.render(element, document.getElementById("score-list"));
     checkGameFinished();
   }
 
