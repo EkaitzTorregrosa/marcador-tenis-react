@@ -1,52 +1,81 @@
 import "bootstrap/dist/css/bootstrap.css";
-import { useState } from "react";
-import ReactDOM from "react-dom";
+import { useEffect, useState } from "react";
 import { TennisGame } from "./Tenis-game";
 
 export function TenisForm() {
   const [playerOneName, setPlayerOneName] = useState("");
   const [playerTwoName, setPlayerTwoName] = useState("");
   const [isGameStarted, setIsGameStarted] = useState(false);
-  const [isGameFInished, setIsGameFinished] = useState(false);
-  const GAME = new TennisGame(playerOneName, playerTwoName);
+  const [isGameFinished, setIsGameFinished] = useState(false);
+  const [, setScoreBoard] = useState("");
+  const [game, setGame] = useState(
+    new TennisGame(playerOneName, playerTwoName)
+  );
+  const [punctuationsArray] = useState<string[]>([]);
+
+  useEffect(() => {
+    if (isGameStarted) {
+      let newGame: TennisGame = new TennisGame(playerOneName, playerTwoName);
+      setGame(newGame);
+    }
+  }, [isGameStarted, playerOneName, playerTwoName]);
 
   function handleSubmit(event: any) {
     event.preventDefault();
     setPlayerOneName(event.target.elements.playerOneName.value);
     setPlayerTwoName(event.target.elements.playerTwoName.value);
     setIsGameStarted(true);
+    punctuationsArray.push(game.getScore().toString());
   }
 
   function playerOnePoint(event: any) {
     event.preventDefault();
-    GAME.playerOnePoint();
+    game.playerOnePoint();
     showScore();
+    punctuationsArray.push(game.getScore().toString());
   }
   function playerTwoPoint(event: any) {
     event.preventDefault();
-    GAME.playerTwoPoint();
+    game.playerTwoPoint();
     showScore();
+    punctuationsArray.push(game.getScore().toString());
   }
 
   function showScore() {
-    const element = (
-      <li
-        className="list-group-item text-dark fw-light"
-        style={{ fontSize: "50%" }}
-      >
-        {GAME.getScore().toString()}
-      </li>
-    );
-
-    ReactDOM.render(element, document.getElementById("score-list"));
+    setScoreBoard(game.getScore().toString());
     checkGameFinished();
   }
 
   function checkGameFinished() {
-    if (GAME.getScore().toString().includes("Win")) {
+    if (game.getScore().toString().includes("Win")) {
       setIsGameFinished(true);
     }
   }
+
+  function printScore() {
+    return punctuationsArray.map((score) => {
+      if (score.includes("Win")) {
+        return (
+          <li
+            className="list-group-item list-group-item-success text-dark font-weight-bold"
+            style={{ fontSize: "70%" }}
+          >
+            {score}
+          </li>
+        );
+      } else {
+        return (
+          <li
+            className="list-group-item text-dark font-weight-light"
+            style={{ fontSize: "50%" }}
+          >
+            {score}
+          </li>
+        );
+      }
+    });
+  }
+
   function newGame() {
     setIsGameStarted(false);
   }
@@ -61,7 +90,7 @@ export function TenisForm() {
               <br />
               <button
                 className="btn btn-secondary"
-                disabled={isGameFInished}
+                disabled={isGameFinished}
                 onClick={playerOnePoint}
               >
                 Won Point
@@ -73,12 +102,7 @@ export function TenisForm() {
                 <h4 className="card-title text-dark">SCORE</h4>
               </div>
               <ul className="list-group list-group-flush" id="score-list">
-                <li
-                  className="list-group-item text-dark fw-light"
-                  style={{ fontSize: "50%" }}
-                >
-                  Love all
-                </li>
+                {printScore()}
               </ul>
             </div>
 
@@ -87,7 +111,7 @@ export function TenisForm() {
               <br />
               <button
                 className="btn btn-secondary"
-                disabled={isGameFInished}
+                disabled={isGameFinished}
                 onClick={playerTwoPoint}
               >
                 Won Point
