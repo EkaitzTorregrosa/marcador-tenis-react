@@ -31,17 +31,17 @@ export function TenisForm() {
   function playerOnePoint(event: any) {
     event.preventDefault();
     game.playerOnePoint();
-    showScore();
+    setScore();
     punctuationsArray.push(game.getScore().toString());
   }
   function playerTwoPoint(event: any) {
     event.preventDefault();
     game.playerTwoPoint();
-    showScore();
+    setScore();
     punctuationsArray.push(game.getScore().toString());
   }
 
-  function showScore() {
+  function setScore() {
     setScoreBoard(game.getScore().toString());
     checkGameFinished();
   }
